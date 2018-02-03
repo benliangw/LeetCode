@@ -1,0 +1,51 @@
+const int MAXN = 100005;
+class Solution
+{
+public:
+	string longestPalindrome(string s)
+	{
+		char Ma[MAXN * 2];
+		int Mp[MAXN * 2];
+		int mx = 0, id = 0;
+		int t = 0;
+		Ma[t++] = '#';
+		for (int i = 0; i < s.length(); ++i)
+		{
+			Ma[t++] = s[i];
+			Ma[t++] = '#';
+		}
+		Ma[t] = '0';
+		for (int i = 0; i < t; ++i)
+		{
+			Mp[i] = mx>i ? min(Mp[2 * id - i], mx - i) : 1;
+			while ((i - Mp[i] >= 0) && (Ma[i + Mp[i]] == Ma[i - Mp[i]]))
+			{
+				Mp[i]++;
+			}
+			if (i + Mp[i] > mx)
+			{
+				mx = i + Mp[i];
+				id = i;
+			}
+		}
+		int max = INT_MIN;
+		int pos;
+		for (int i = 0; i < t; ++i)
+		{
+			if (Mp[i] > max)
+			{
+				max = Mp[i];
+				pos = i;
+			}
+		}
+		string res = "";
+		for (int i = pos - max + 1; i < pos + max; ++i)
+		{
+			if (Ma[i] != '#')
+			{
+				res += Ma[i];
+			}
+		}
+		return res;
+	}
+};
