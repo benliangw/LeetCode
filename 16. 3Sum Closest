@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int threeSumClosest(vector<int>& nums, int target) {
+        sort(nums.begin(), nums.end());
+        int mytar;
+        int res;
+        int dis = INT_MAX;
+        for(int i = 0; i < nums.size(); i++)
+        {
+            int left = i + 1;
+            int right = nums.size() - 1;
+            mytar = target - nums[i];
+            while(left < right)
+            {
+                if(abs(mytar - (nums[left] + nums[right])) < dis)
+                {
+                    dis = abs(mytar - (nums[left] + nums[right]));
+                    res = nums[left] + nums[right] + nums[i];
+                }
+                if(nums[left] + nums[right] > mytar)
+                    right--;
+                else
+                    left++;
+            }
+        }
+        return res;
+    }
+};
