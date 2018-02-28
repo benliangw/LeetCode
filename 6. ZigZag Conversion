@@ -1,0 +1,27 @@
+class Solution {
+public:
+	string convert(string s, int numRows) {
+		int length = s.length();
+		if (length == 0)
+			return s;
+		if (numRows == 1)
+			return s;
+		string p;
+		int eachgroup = 2 * (numRows - 1);
+		int group = length / eachgroup;
+		int remains = length - group * eachgroup;
+		for (int i = 0; i < numRows; i++)
+		{
+			for (int j = i; ; j += eachgroup)
+			{
+				if (j >= length)
+					break;
+				p.push_back(s[j]);
+				if (i > 0 && i < numRows - 1 && (j + 2 * (numRows - 1 - i) < length))
+					p.push_back(s[j + 2 * (numRows - 1 - i)]);
+
+			}
+		}
+		return p;
+	}
+};
