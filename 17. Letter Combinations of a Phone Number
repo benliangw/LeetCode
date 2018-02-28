@@ -1,0 +1,56 @@
+class Solution {
+private:
+	map<string, string> number;
+	vector<string> res;
+public:
+	void init(void)
+	{
+		number.insert(make_pair("2", "abc"));
+		number.insert(make_pair("3", "def"));
+		number.insert(make_pair("4", "ghi"));
+		number.insert(make_pair("5", "jkl"));
+		number.insert(make_pair("6", "mno"));
+		number.insert(make_pair("7", "pqrs"));
+		number.insert(make_pair("8", "tuv"));
+		number.insert(make_pair("9", "wxyz"));
+		number.insert(make_pair("0", " "));
+	}
+	
+	void dealwith(string first, string second)
+	{
+		if (second.length() == 1)
+		{
+			for (int i = 0; i < number[second.substr(0, 1)].length(); i++)
+			{
+				res.push_back((string)(first + number[second.substr(0, 1)].substr(i, 1)));
+			}
+		}
+		else
+		{
+			for (int i = 0; i < number[second.substr(0, 1)].length(); i++)
+			{
+				dealwith((string)(first + number[second.substr(0, 1)].substr(i, 1)), (string)second.substr(1));
+			}
+		}
+
+	}
+	
+	vector<string> letterCombinations(string digits)
+	{
+		init();
+        if(digits.length() == 1)
+        {
+            for (int i = 0; i < number[digits].length(); i++)
+            {
+                res.push_back(number[digits].substr(i, 1));
+            }
+            return res;
+        }
+		for (int i = 0; i < number[digits.substr(0, 1)].length(); i++)
+		{
+			dealwith((string)number[digits.substr(0, 1)].substr(i, 1), (string)digits.substr(1));
+		}
+		return res;
+	}
+	
+};
