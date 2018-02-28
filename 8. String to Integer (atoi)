@@ -1,0 +1,52 @@
+static int some = []()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+	return 0;
+}();
+
+class Solution {
+public:
+	int myAtoi(string str) {
+		bool IsWhiteSpace = true;
+		bool IsCoe = true;
+		int coef = 1;
+		long long res = 0;
+		for (int i = 0; i < str.length(); i++)
+		{
+			if (str[i] == ' ' && IsWhiteSpace)
+				continue;
+			IsWhiteSpace = false;
+			if (str[i] == '+' && IsCoe)
+			{
+				coef = 1;
+				IsCoe = false;
+				continue;
+			}
+			else if (str[i] == '-' && IsCoe)
+			{
+				coef = -1;
+				IsCoe = false;
+				continue;
+			}
+			else
+			{
+				IsCoe = false;
+			}
+			if (str[i] >= '0' && str[i] <= '9')
+			{
+				res = res * 10 + str[i] - '0';
+				if (res*coef > INT_MAX || res*coef < INT_MIN)
+					break;
+				continue;
+			}
+			break;
+		}
+		res = res * coef;
+		if (res > INT_MAX)
+			res = INT_MAX;
+		if (res < INT_MIN)
+			res = INT_MIN;
+		return res;
+	}
+};
