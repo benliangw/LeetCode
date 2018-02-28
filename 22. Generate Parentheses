@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<string> res;
+    
+    void dp(int left, int right, string out)
+    {
+        if(left > right)
+            return;
+        if(left == 0 && right == 0)
+            res.push_back(out);
+        if(left > 0)
+            dp(left - 1, right, out + '(');
+        if(right > 0)
+            dp(left, right - 1, out + ')');
+    }
+    
+    vector<string> generateParenthesis(int n) 
+    {
+        dp(n, n, "");
+        return res;
+    }
+};
