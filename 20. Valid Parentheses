@@ -1,0 +1,41 @@
+class Solution {
+public:
+	bool ismatch(char a, char b)
+	{
+		if (a == '(' && b == ')')
+			return true;
+		if (a == '[' && b == ']')
+			return true;
+		if (a == '{' && b == '}')
+			return true;
+		return false;
+	}
+
+	bool isValid(string s) 
+	{
+		stack<char> mystack;
+		for (int i = 0; i < s.length(); i++)
+		{
+			if (s[i] == '(' || s[i] == '{' || s[i] == '[')
+				mystack.push(s[i]);
+			else
+			{
+				if (mystack.empty())
+					return false;
+				char mytop = mystack.top();
+				if (ismatch(mytop, s[i]))
+				{
+					mystack.pop();
+				}
+				else
+				{
+					return false;
+				}
+			}
+		}
+		if (mystack.empty())
+			return true;
+		else
+			return false;
+	}
+};
