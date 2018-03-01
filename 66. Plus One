@@ -1,0 +1,40 @@
+class Solution {
+public:
+    vector<int> plusOne(vector<int>& digits) 
+    {
+        int k = digits.size() - 1;
+        int carry;
+        if(digits[k] == 9)
+        {
+            carry = 1;
+            digits[k] = 0;
+        }
+        else
+        {
+            carry = 0;
+            digits[k] = digits[k] + 1;
+            return digits;
+        }
+        while(carry == 1)
+        {
+            k--;
+            if(k == -1)
+            {
+                digits.insert(digits.begin(), 1);
+                return digits;
+            }
+            if(digits[k] == 9)
+            {
+                carry = 1;
+                digits[k] = 0;
+                continue;
+            }
+            else
+            {
+                carry = 0;
+                digits[k] = digits[k] + 1;
+                return digits;
+            }
+        }
+    }
+};
