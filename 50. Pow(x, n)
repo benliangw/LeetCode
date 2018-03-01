@@ -1,0 +1,33 @@
+class Solution {
+public:
+    double myPow(double x, int n) 
+    {
+        double res = 1;
+        bool flag = false;
+        long long n2;
+        if(n < 0)
+        {
+            n2 = (long long)n * -1;
+            flag = true;
+        }
+        else
+        {
+            n2 = n;
+            flag = false;
+        }
+        while(n2 > 0)
+        {
+            if(n2 % 2 == 0)
+            {
+                x = x * x;
+                n2 /= 2;
+            }
+            else
+            {
+                res *= x;
+                n2 -= 1;
+            }
+        }
+        return flag?1/res:res;
+    }
+};
