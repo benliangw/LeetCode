@@ -1,0 +1,53 @@
+class Solution {
+public:
+	int trap(vector<int>& height)
+	{
+		if (height.size() == 0)
+			return 0;
+		int i = 0;
+		int total = 0;
+		while (height[i] == 0)
+			i++;
+		int first = height[i];
+		i++;
+		bool flag = false;
+		int tmp = 0;
+        int top = 0;
+		for (; i < height.size(); i++)
+		{
+			flag = false;
+			if (height[i] < first)
+			{
+				tmp += first - height[i];
+			}
+			else
+			{
+				flag = true;
+				first = height[i];
+                top = i;
+				total += tmp;
+				tmp = 0;
+			}
+		}
+		int j = height.size() - 1;
+		first = height[j];
+		tmp = 0;
+		if (flag == false)
+		{
+			for (int j = height.size() - 1; j >= top; j--)
+			{
+				flag = false;
+				if (height[j] < first)
+					tmp += first - height[j];
+				else
+				{
+					flag = true;
+					first = height[j];
+					total += tmp;
+					tmp = 0;
+				}
+			}
+		}
+		return total;
+	}
+};
