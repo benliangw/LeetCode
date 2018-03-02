@@ -1,0 +1,32 @@
+class Solution {
+public:
+    string licenseKeyFormatting(string S, int K)
+    {
+        string S2 = "";
+        for(int i = 0; i < S.length(); ++i)
+        {
+            if(S[i] != '-')
+            {
+                if(S[i] >= 'a' && S[i] <= 'z')
+                    S[i] += ('A' - 'a');
+                S2 += S[i];
+            }
+        }
+        int total = S2.length();
+        int first = total % K;
+        string res = "";
+        for(int i = 0; i < first; ++i)
+        {
+            res += S2[i];
+        }
+        for(int i = first; i < total; ++i)
+        {
+            if((i-first) % K == 0 && i != 0)
+            {
+                res += '-';
+            }
+            res += S2[i];
+        }
+        return res;
+    }
+};
