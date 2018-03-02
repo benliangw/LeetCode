@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<int> anagramMappings(vector<int>& A, vector<int>& B) 
+    {
+        vector<int> res;
+        if(A.size() == 0)
+            return res;
+        unordered_map<int, int> D;
+        for(int i = 0; i < B.size(); ++i)
+        {
+            D.insert(make_pair(B[i], i));
+        }
+        for(int i = 0; i < A.size(); i++)
+        {
+            // both ok.
+            //res.push_back(D[A[i]]);
+            res.push_back(D.find(A[i])->second);
+        }
+        return res;
+    }
+};
