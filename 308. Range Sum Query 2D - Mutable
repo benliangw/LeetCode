@@ -1,0 +1,168 @@
+#define son1 (u << 2) - 2
+#define son2 (u << 2) - 1
+#define son3 (u << 2)
+#define son4 (u << 2) | 1
+#define MAXN 1000
+
+class NumMatrix {
+public:
+	struct node
+	{
+		int x1, x2, y1, y2;
+		int sum;
+	}T[MAXN * MAXN * 2];
+
+	vector<vector<int>> ask;
+
+	void pushup(int u)
+	{
+		T[u].sum = T[son1].sum + T[son2].sum + T[son3].sum + T[son4].sum;
+	}
+
+	void build(int u, int x1, int x2, int y1, int y2)
+	{
+		T[u].x1 = x1;
+		T[u].x2 = x2;
+		T[u].y1 = y1;
+		T[u].y2 = y2;
+		if (x1 == x2 && y1 == y2)
+		{
+			T[u].sum = ask[x1 - 1][y1 - 1];
+			return;
+		}
+		int midx = (x1 + x2) >> 1;
+		int midy = (y1 + y2) >> 1;
+
+		if (x1 == x2)
+		{
+			build(son1, x1, x2, y1, midy);
+			build(son3, x1, x2, midy + 1, y2);
+		}
+
+		else if (y1 == y2)
+		{
+			build(son1, x1, midx, y1, y2);
+			build(son2, midx + 1, x2, y1, y2);
+		}
+
+		else if (x2 > x1 && y2 > y1)
+		{
+			build(son1, x1, midx, y1, midy);
+			build(son2, midx + 1, x2, y1, midy);
+			build(son3, x1, midx, midy + 1, y2);
+			build(son4, midx + 1, x2, midy + 1, y2);
+		}
+
+		pushup(u);
+	}
+
+	bool isin(int node, int row, int col)
+	{
+		if (T[node].x1 <= row && T[node].x2 >= row && T[node].y1 <= col && T[node].y2 >= col)
+			return true;
+		return false;
+	}
+
+	int checkin(int u, int row, int col)
+	{
+		if (T[u].x1 == T[u].x2)
+		{
+			if (isin(son1, row, col))
+				return son1;
+			if (isin(son3, row, col))
+				return son3;
+		}
+		else if (T[u].y1 == T[u].y2)
+		{
+			if (isin(son1, row, col))
+				return son1;
+			if (isin(son2, row, col))
+				return son2;
+		}
+		else
+		{
+			if (isin(son1, row, col))
+				return son1;
+			if (isin(son2, row, col))
+				return son2;
+			if (isin(son3, row, col))
+				return son3;
+			if (isin(son4, row, col))
+				return son4;
+		}
+	}
+
+	int add(int u, int row, int col, int val)
+	{
+		int modify = 0;
+		if (T[u].x1 == T[u].x2 && T[u].y1 == T[u].y2)
+		{
+			modify = val - T[u].sum;
+			T[u].sum += modify;
+			return modify;
+		}
+		int whichnode = checkin(u, row, col);
+		modify = add(whichnode, row, col, val);
+		T[u].sum += modify;
+		return modify;
+	}
+
+	int check(int u, int x1, int y1, int x2, int y2)
+	{
+		int res = 0;
+		if (T[u].x1 >= x1 && T[u].x2 <= x2 && T[u].y1 >= y1 && T[u].y2 <= y2)
+		{
+			return T[u].sum;
+		}
+		else if (T[u].x1 > x2 || T[u].x2 < x1 || T[u].y1 > y2 || T[u].y2 < y1)
+		{
+			return 0;
+		}
+		else
+		{
+			res += check(son1, x1, y1, x2, y2);
+			res += check(son2, x1, y1, x2, y2);
+			res += check(son3, x1, y1, x2, y2);
+			res += check(son4, x1, y1, x2, y2);
+		}
+		return res;
+	}
+
+	NumMatrix(vector<vector<int>> matrix)
+	{
+        ask.clear();
+		int m = matrix.size();
+		if (m != 0)
+		{
+			int n = matrix[0].size();
+			ask.resize(m);
+			for (int i = 0; i < m; i++)
+				ask[i].resize(n);
+			ask.swap(matrix);
+			build(1, 1, m, 1, n);
+		}
+	}
+
+	void update(int row, int col, int val)
+	{
+		if (T[1].x1 == T[1].x2 && T[1].y1 == T[1].y2)
+			T[1].sum = val;
+		else
+			add(1, row + 1, col + 1, val);
+	}
+
+	int sumRegion(int row1, int col1, int row2, int col2)
+	{
+		if (T[1].x1 == T[1].x2 && T[1].y1 == T[1].y2)
+			return T[1].sum;
+		else
+			return check(1, row1 + 1, col1 + 1, row2 + 1, col2 + 1);
+	}
+};
+
+/**
+ * Your NumMatrix object will be instantiated and called as such:
+ * NumMatrix obj = new NumMatrix(matrix);
+ * obj.update(row,col,val);
+ * int param_2 = obj.sumRegion(row1,col1,row2,col2);
+ */
