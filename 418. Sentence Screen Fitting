@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int wordsTyping(vector<string>& sentence, int rows, int cols) 
+    {
+        string word = "";
+        for(int i = 0; i < sentence.size(); ++i)
+        {
+            word += sentence[i];
+            word += " ";
+        }
+        int start = 0;
+        int len = word.length();
+        for(int i = 0; i < rows; i++)
+        {
+            start += cols;
+            if(word[start % len] == ' ')
+            {
+                start++;
+                continue;
+            }
+            while(start > 0 && word[(start - 1) % len] != ' ')
+            {
+                start--;
+            }
+        }
+        return (start / len);
+    }
+};
