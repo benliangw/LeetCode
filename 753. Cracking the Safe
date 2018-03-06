@@ -1,0 +1,38 @@
+class Solution {
+private:
+    unordered_set<string> visited;
+    int totallen;
+public:
+    string crackSafe(int n, int k) {
+        totallen = pow(k, n) + n - 1;
+        string ans(n, '0');
+        visited.insert(ans);
+        if(dfs(n, k, ans))
+            return ans;
+        return "";
+    }
+    
+    bool dfs(const int n, const int k, string& ans)
+    {
+        if(ans.length() == totallen)
+            return true;
+        string node = ans.substr(ans.length() - n + 1, n - 1);
+        for(char c = '0'; c < '0' + k; ++c)
+        {
+            node.push_back(c);
+            if(visited.count(node))
+            {
+                node.pop_back();
+                continue;
+            }
+            ans.push_back(c);
+            visited.insert(node);
+            if(dfs(n, k, ans))
+                return true;
+            visited.erase(node);
+            ans.pop_back();
+            node.pop_back();
+        }
+        return false;
+    }
+};
