@@ -1,0 +1,48 @@
+class Solution {
+public:
+    string multi(int time, string s)
+    {
+        string res = "";
+        for(int i = 0; i < time; ++i)
+        {
+            res += s;
+        }
+        return res;
+    }
+    
+    string deal(string todo, int &i)
+    {
+        string tmp = "";
+        for(; i < todo.length(); i++)
+        {
+            if(todo[i] >= '0' && todo[i] <= '9')
+            {
+                int times = 0;
+                while(todo[i] != '[')
+                {
+                    times *= 10;
+                    times += todo[i] - '0';
+                    i++;
+                }
+                i++;
+                tmp += multi(times, deal(todo, i));
+            }
+            else if(todo[i] == ']')
+            {
+                return tmp;
+            }
+            else
+            {
+                tmp += todo[i];
+            }
+        }
+        return tmp;
+    }
+    
+    string decodeString(string s) 
+    {
+        int num = 0;
+        string res = deal(s, num);
+        return res;
+    }
+};
