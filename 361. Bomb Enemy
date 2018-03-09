@@ -1,0 +1,52 @@
+class Solution {
+public:
+    int maxKilledEnemies(vector<vector<char>>& grid) 
+    {
+        if(grid.size() == 0 || grid[0].size() == 0)
+            return 0;
+        int m = grid.size();
+        int n = grid[0].size();
+        vector<vector<int>> uptodown(m, vector<int>(n, 0));
+        vector<vector<int>> downtoup(m, vector<int>(n, 0));
+        vector<vector<int>> lefttoright(m, vector<int>(n, 0));
+        vector<vector<int>> righttoleft(m, vector<int>(n, 0));
+        for(int i = 0; i < m; i++)
+        {
+            for(int j = 0; j < n; j++)
+            {
+                int t = (j==0||grid[i][j]=='W')?0:lefttoright[i][j - 1];
+                lefttoright[i][j] = (grid[i][j] == 'E')?t+1:t;
+            }
+            for(int j = n - 1; j >= 0; j--)
+            {
+                int t = (j==n-1||grid[i][j]=='W')?0:righttoleft[i][j + 1];
+                righttoleft[i][j] = (grid[i][j] == 'E')?t+1:t;
+            }
+        }
+        for(int j = 0; j < n; j++)
+        {
+            for(int i = 0; i < m; i++)
+            {
+                int t = (i==0||grid[i][j]=='W')?0:uptodown[i-1][j];
+                uptodown[i][j]=(grid[i][j]=='E')?t+1:t;
+            }
+            for(int i = m-1; i >= 0; i--)
+            {
+                int t = (i==m-1||grid[i][j]=='W')?0:downtoup[i+1][j];
+                downtoup[i][j]=(grid[i][j]=='E')?t+1:t;
+            }
+        }
+        int res = 0;
+        for(int i = 0; i < m; i++)
+        {
+            for(int j = 0; j < n; j++)
+            {
+                if(grid[i][j]=='0')
+                {
+                    res = max(res, (lefttoright[i][j]+righttoleft[i][j]+uptodown[i][j]+downtoup[i][j]));
+                }
+            }
+        }
+        return res;
+    }
+};
