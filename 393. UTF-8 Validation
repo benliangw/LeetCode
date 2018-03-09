@@ -1,0 +1,41 @@
+class Solution {
+public:
+    
+    int gettop(int data)
+    {
+        if(data >= 248)
+            return -1;
+        if(data >= 240)
+            return 3;
+        if(data >= 224)
+            return 2;
+        if(data >= 192)
+            return 1;
+        if(data >= 128)
+            return 10;
+        if(data >= 0)
+            return 0;
+        else
+            return -1;
+    }
+    
+    bool validUtf8(vector<int>& data)
+    {
+        int i = 0;
+        int num = 0;
+        while(i < data.size())
+        {
+            num = gettop(data[i]);
+            if(num == -1)
+                return false;
+            for(int k = 0; k < num; ++k)
+            {
+                i++;
+                if(i >= data.size() || gettop(data[i]) != 10)
+                    return false;
+            }
+            i++;
+        }
+        return true;
+    }
+};
