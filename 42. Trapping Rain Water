@@ -24,7 +24,7 @@ public:
 			{
 				flag = true;
 				first = height[i];
-                top = i;
+                		top = i;
 				total += tmp;
 				tmp = 0;
 			}
