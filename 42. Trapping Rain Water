@@ -12,7 +12,7 @@ public:
 		i++;
 		bool flag = false;
 		int tmp = 0;
-        int top = 0;
+        	int top = 0;
 		for (; i < height.size(); i++)
 		{
 			flag = false;
