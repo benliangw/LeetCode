@@ -1,0 +1,99 @@
+class Solution {
+public:
+    int m_all;
+    int n_all;
+    int total = 0;
+    
+    struct node
+    {
+        friend bool operator< (node n1, node n2)
+        {
+            return n1.height > n2.height;
+        }
+        
+        int x;
+        int y;
+        int height;
+        
+        node(int _x, int _y, int _height)
+        {
+            x = _x;
+            y = _y;
+            height = _height;
+        }
+    };
+    
+    
+    int trapRainWater(vector<vector<int>>& heightMap) 
+    {
+        priority_queue<node> T;
+        
+        int m = heightMap.size();
+        if(m == 0)
+            return 0;
+        int n = heightMap[0].size();
+        if(n == 0)
+            return 0;
+        m_all = m;
+        n_all = n;
+        vector<vector<bool>> iswall(m, vector<bool>(n, false));
+        for(int i = 0; i < m; i++)
+        {
+            iswall[i][0] = true;
+            iswall[i][n-1] = true;
+            node left(i, 0, heightMap[i][0]);
+            node right(i, n-1, heightMap[i][n-1]);
+            T.push(left);
+            T.push(right);
+        }
+        for(int j = 1; j < n - 1; j++)
+        {
+            iswall[0][j] = true;
+            iswall[m-1][j] = true;
+            node up(0, j, heightMap[0][j]);
+            node down(m-1, j, heightMap[m-1][j]);
+            T.push(up);
+            T.push(down);
+        }
+        
+        while(!T.empty())
+        {
+            node now = T.top();
+            T.pop();
+            find(now, T, heightMap, iswall);
+        }
+        return total;
+    }
+    
+    void find(node now, priority_queue<node>& T, vector<vector<int>>& heightMap, vector<vector<bool>>& iswall)
+    {
+        int first = now.x;
+        int second = now.y;
+        int height = now.height;
+        int move_x[4] = {0, 0, 1, -1};
+        int move_y[4] = {1, -1, 0, 0};
+        for(int i = 0; i < 4; i++)
+        {
+            int x = first + move_x[i];
+            int y = second + move_y[i];
+            if(x < 0 || y < 0 || x >= m_all || y >= n_all)
+                continue;
+            if(iswall[x][y])
+                continue;
+            if(heightMap[x][y] >= height)
+            {
+                iswall[x][y] = true;
+                node tmp(x, y, heightMap[x][y]);
+                T.push(tmp);
+            }
+            else
+            {
+                total += height - heightMap[x][y];
+                iswall[x][y] = true;
+                node tmp(x, y, height);
+                T.push(tmp);
+            }
+        }
+    }
+    
+};
