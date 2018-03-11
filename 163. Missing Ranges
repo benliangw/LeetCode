@@ -1,0 +1,60 @@
+class Solution {
+public:
+    
+    string get(long pre, long now)
+    {
+        string res = "";
+        if(pre >= now - 1)
+            return res;
+        if(now == pre + 2)
+            return to_string(pre+1);
+        else
+        {
+            res += to_string(pre+1);
+            res += "->";
+            res += to_string(now-1);
+            return res;
+        }
+    }
+    
+    vector<string> findMissingRanges(vector<int>& nums, int lower, int upper) 
+    {
+		long mylownum = (long) lower;
+		long myupnum = (long) upper;
+	
+	
+        vector<string> res;
+        if(nums.size() == 0)
+        {
+            string test = get(mylownum-1, myupnum+1);
+            if(test.compare(""))
+                res.push_back(test);
+            return res;
+        }
+        if(nums.size() == 1)
+        {
+            string test = get(mylownum-1, (long)nums[0]);
+            if(test.compare(""))
+                res.push_back(test);
+            test = get((long)nums[0], myupnum + 1);
+            if(test.compare(""))
+                res.push_back(test);
+            return res;
+        }
+        string test = get(mylownum-1, (long)nums[0]);
+        if(test.compare(""))
+            res.push_back(test);
+        long pre = nums[0];
+        long now = nums[1];
+        for(int i = 0; i < nums.size() - 1; i++)
+        {
+            test = get((long)nums[i], (long)nums[i+1]);
+            if(test.compare(""))
+                res.push_back(test);
+        }
+        test = get((long)nums[nums.size()-1], myupnum+1);
+        if(test.compare(""))
+            res.push_back(test);
+        return res;
+    }
+};
