@@ -1,0 +1,94 @@
+class Solution {
+public:
+    char choose[5] = {'0', '1', '8', '6', '9'};
+    char pare[5] = {'0', '1', '8', '9', '6'};
+    vector<string> output;
+    
+    vector<string> findStrobogrammatic(int n) 
+    {
+        string res = "";
+        vector<string> tmp;
+        vector<string> return_tmp;
+        if(n == 1)
+        {
+            for(int i = 0; i < 3; i++)
+            {
+                res = "";
+                res += choose[i];
+                return_tmp.push_back(res);
+            }
+            return return_tmp;
+        }
+        
+        if(n == 2)
+        {
+            for(int i = 1; i < 5; i++)
+            {
+                res = "";
+                res += choose[i];
+                res += pare[i];
+                return_tmp.push_back(res);
+            }
+            return return_tmp;
+        }
+        
+        tmp = foo(n - 2);
+        for(int i = 0; i < tmp.size(); i++)
+        {
+            for(int j = 1; j < 5; j++)
+            {
+                res = "";
+                res += choose[j];
+                res += tmp[i];
+                res += pare[j];
+                return_tmp.push_back(res);
+            }
+        }
+        return return_tmp;
+    }
+    
+    vector<string> foo(int n)
+    {
+        string res = "";
+        
+        vector<string> tmp;
+        vector<string> return_tmp;
+        
+        if(n == 1)
+        {
+            for(int i = 0; i < 3; i++)
+            {
+                res = "";
+                res += choose[i];
+                return_tmp.push_back(res);
+            }
+            return return_tmp;
+        }
+        
+        if(n == 2)
+        {
+            for(int i = 0; i < 5; i++)
+            {
+                res = "";
+                res += choose[i];
+                res += pare[i];
+                return_tmp.push_back(res);
+            }
+            return return_tmp;
+        }
+        
+        tmp = foo(n - 2);
+        for(int i = 0; i < tmp.size(); i++)
+        {
+            for(int j = 0; j < 5; j++)
+            {
+                res = "";
+                res += choose[j];
+                res += tmp[i];
+                res += pare[j];
+                return_tmp.push_back(res);
+            }
+        }
+        return return_tmp;
+    }
+};
