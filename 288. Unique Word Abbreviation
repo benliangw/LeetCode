@@ -1,0 +1,28 @@
+class ValidWordAbbr {
+public:
+    ValidWordAbbr(vector<string> dictionary) 
+    {
+         for(int i = 0; i < dictionary.size(); i++)
+         {
+             string s = dictionary[i];
+             string k = s[0] + to_string(s.size() - 2) + s.back();
+             if(m.find(k) != m.end() && m[k] != s)
+                 m[k] = "";
+             else
+                 m[k] = s;
+         }
+    }
+    
+    bool isUnique(string word) {
+        string k = word[0] + to_string(word.size() - 2) + word.back();
+        return m.find(k) == m.end() || m[k] == word;
+    }
+private:
+    unordered_map<string, string> m;
+};
+
+/**
+ * Your ValidWordAbbr object will be instantiated and called as such:
+ * ValidWordAbbr obj = new ValidWordAbbr(dictionary);
+ * bool param_1 = obj.isUnique(word);
+ */
