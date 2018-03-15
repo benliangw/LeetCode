@@ -1,0 +1,60 @@
+class Solution {
+public:
+    string addBoldTag(string s, vector<string>& dict) 
+    {
+        if(s.size() == 0)
+            return s;
+        vector<bool> bold(s.size());
+        for(auto word: dict)
+        {
+            int wordlen = word.length();
+            unordered_map<string, int> movelength;
+            for(int i = 0; i < word.length(); i++)
+            {
+                if(movelength.find(word.substr(i, 1)) != movelength.end())
+                    movelength[word.substr(i,1)] = word.length() - i;
+                else
+                    movelength.insert({word.substr(i,1), word.length() - i});
+            }
+            int i = 0;
+            while(i < s.length())
+            {
+                int j = 0;
+                for(; j < wordlen && (i + j < s.length()); ++j)
+                {
+                    if(s[i+j] != word[j])
+                        break;
+                }
+                if(j >= word.length())
+                {
+                    fill(bold.begin()+i, bold.begin()+i+wordlen, true);
+                }
+                if(i + word.length() >= s.length())
+                    break;
+                if(movelength.find(s.substr(i+wordlen, 1)) != movelength.end())
+                    i += movelength.find(s.substr(i+wordlen, 1))->second;
+                else
+                    i += wordlen + 1;
+            }
+        }
+        string ret;
+        bool state = true;
+        for(int i = 0; i < s.size(); i++)
+        {
+            if(state && bold[i])
+            {
+                ret += "<b>";
+                state = false;
+            }
+            else if(!state && !bold[i])
+            {
+                ret += "</b>";
+                state = true;
+            }
+            ret.push_back(s[i]);
+        }
+        if(!state)
+            ret += "</b>";
+        return ret;
+    }
+};
