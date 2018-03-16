@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int lengthOfLongestSubstringTwoDistinct(string s) 
+    {
+        int left = 0;
+        int num = 0;
+        unordered_map<char, int> appear;
+        for(int i = 0; i < s.length(); i++)
+        {
+            appear[s[i]]++;
+            while(appear.size() > 2)
+            {
+                appear[s[left]]--;
+                if(appear[s[left]] == 0)
+                {
+                    appear.erase(s[left]);
+                }
+                left++;
+            }
+            num = max(num, i - left + 1);
+        }
+        return num;
+    }
+};
