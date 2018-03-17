@@ -1,0 +1,73 @@
+class Solution {
+public:
+    
+    vector<pair<int, int>> merge(vector<pair<int, int>>& left, vector<pair<int, int>>& right)
+    {
+        vector<pair<int, int>> ret;
+        int h1 = 0, h2 = 0, i = 0, j = 0;
+        while(i < left.size() && j < right.size())
+        {
+            int x = 0, h = 0;
+            if(left[i].first < right[j].first)
+            {
+                x = left[i].first;
+                h1 = left[i].second;
+                h = max(h1, h2);
+                i++;
+            }
+            else if(left[i].first > right[j].first)
+            {
+                x = right[j].first;
+                h2 = right[j].second;
+                h = max(h1, h2);
+                j++;
+            }
+            else
+            {
+                x = left[i].first;
+                h1 = left[i].first;
+                h2 = right[j].first;
+                h = max(h1, h2);
+                i++;
+                j++;
+            }
+            if(ret.size() == 0 || h != ret[ret.size()-1].second)
+                ret.push_back(make_pair(x, h));
+        }
+        while(i < left.size())
+        {
+            ret.push_back(left[i++]);
+        }
+        while(j < right.size())
+        {
+            ret.push_back(right[j++]);
+        }
+        return ret;
+    }
+    
+    vector<pair<int, int>> recurSkyline(vector<vector<int>>& buildings, int start, int end)
+    {
+        if(end > start)
+        {
+            int mid = (start + end) / 2;
+            vector<pair<int, int>> B = recurSkyline(buildings, start, mid);
+            vector<pair<int, int>> C = recurSkyline(buildings, mid+1, end);
+            return merge(B, C);
+        }
+        else
+        {
+            vector<pair<int, int>> ret;
+            ret.push_back(make_pair(buildings[start][0], buildings[start][2]));
+            ret.push_back(make_pair(buildings[start][1], 0));
+            return ret;
+        }
+    }
+    
+    vector<pair<int, int>> getSkyline(vector<vector<int>>& buildings) 
+    {
+        vector<pair<int, int>> res;
+        if(buildings.size() == 0)
+            return res;
+        return recurSkyline(buildings, 0, buildings.size()-1);
+    }
+};
