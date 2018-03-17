@@ -25,8 +25,8 @@ public:
             else
             {
                 x = left[i].first;
-                h1 = left[i].first;
-                h2 = right[j].first;
+                h1 = left[i].second;
+                h2 = right[j].second;
                 h = max(h1, h2);
                 i++;
                 j++;
