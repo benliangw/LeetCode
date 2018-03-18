@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool judgeCircle(string moves) 
+    {
+        int col = 0;
+        int row = 0;
+        for(char s : moves)
+        {
+            if(s == 'L')
+                row++;
+            else if(s == 'R')
+                row--;
+            else if(s == 'U')
+                col++;
+            else if(s == 'D')
+                col--;
+        }
+        if(row == 0 && col == 0)
+            return true;
+        else
+            return false;
+    }
+};
