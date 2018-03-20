@@ -1,0 +1,27 @@
+class Solution {
+public:
+    string removeDuplicateLetters(string s) 
+    {
+        unordered_map<char, int> t;
+        unordered_map<char, bool> visited;
+        string res = "0";
+        for(int i = 0; i < s.length(); i++)
+        {
+            t[s[i]]++;
+        }
+        for(int i = 0; i < s.length(); i++)
+        {
+            t[s[i]]--;
+            if(visited[s[i]])
+                continue;
+            while(s[i] < res.back() && t[res.back()])
+            {
+                visited[res.back()] = false;
+                res.pop_back();
+            }
+            res += s[i];
+            visited[s[i]] = true;
+        }
+        return res.substr(1);
+    }
+};
