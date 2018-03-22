@@ -1,0 +1,20 @@
+class Solution {
+public:
+    string shortestPalindrome(string s) 
+    {
+        string rev_s = s;
+        reverse(rev_s.begin(), rev_s.end());
+        string l = s + "#" + rev_s;
+        
+        vector<int> next(l.size(), 0);
+        for(int i = 1; i < l.size(); i++)
+        {
+            int j = next[i - 1];
+            while(j > 0 && l[i] != l[j])
+                j = next[j - 1];
+            next[i] = (j += l[i] == l[j]);
+        }
+        
+        return rev_s.substr(0, s.size() - next[l.size() - 1]) + s;
+    }
+};
