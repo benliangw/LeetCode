@@ -1,0 +1,64 @@
+class Solution {
+public:
+    class TrieNode
+    {
+    public:
+        vector<TrieNode*> children;
+        TrieNode()
+        {
+            children.resize(2, nullptr);
+        }
+    };
+    
+    TrieNode* buildTree(vector<int>& nums)
+    {
+        TrieNode* root = new TrieNode();
+        int n = nums.size();
+        for(int i = 0; i < n; i++)
+        {
+            TrieNode* cur = root;
+            int num = nums[i];
+            for(int j = 31; j >= 0; j--)
+            {
+                int index = ((num >> j) & 1);
+                if(cur->children[index] == NULL)
+                    cur->children[index] = new TrieNode();
+                cur = cur->children[index];
+            }
+        }
+        return root;
+    }
+    
+    int helper(TrieNode* cur, int num)
+    {
+        int res = 0;
+        for(int i = 31; i >= 0; i--)
+        {
+            int index = ((num >> i) & 1) ? 0 : 1;
+            if(cur->children[index])
+            {
+                res <<= 1;
+                res |= 1;
+                cur = cur->children[index];
+            }
+            else
+            {
+                res <<= 1;
+                res |= 0;
+                cur = cur->children[index ? 0 : 1];
+            }
+        }
+        return res;
+    }
+    
+    int findMaximumXOR(vector<int>& nums) {
+        int res = 0;
+        TrieNode* root = buildTree(nums);
+        
+        for(auto i : nums)
+        {
+            res = max(res, helper(root, i));
+        }
+        return res;
+    }
+};
